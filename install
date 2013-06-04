@@ -1,0 +1,7 @@
+#! /bin/bash
+
+PROJECTDIR=$(cd $(dirname $0); pwd)
+PROJECTNAME=${PROJECTDIR##/*/}
+
+mkdir -p ~/bin
+ln -s $PROJECTDIR/$PROJECTNAME ~/bin/

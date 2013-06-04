@@ -1,0 +1,35 @@
+#! /bin/bash
+
+set -e
+set -u
+
+PROJECTNAME=${PWD##/*/}
+
+main () {
+    if [[ `starts_with_git current_remote_url` == 0 ]]; then exit 0; fi
+    GITUSER=`parse_user`
+    git remote set-url --add --push origin git@github.com:$GITUSER/$PROJECTNAME.git
+}
+
+parse_user () {
+    current_remote_url | strip_leading_http | pick_out_second_slash
+}
+
+current_remote_url () {
+    git config remote.origin.url
+}
+
+strip_leading_http () {
+    sed "s/http.*:\/\///"
+}
+
+pick_out_second_slash () {
+    cut -d / -f 2
+}
+
+starts_with_git () {
+# Does $1 start with "git"?
+    $1 | grep '^git'
+}
+
+main $*
